@@ -7,7 +7,7 @@ public class Settings {
     static String mode = "Easy";
     static int flagCount = 10;
     static int totalField = 71;
-    
+
     static int n = rows;
 
     public static void viewSettings() {
@@ -38,7 +38,7 @@ public class Settings {
 
     }
 
-    public static int getFlagCount(){
+    public static int getFlagCount() {
         return flagCount;
     }
 
@@ -80,7 +80,7 @@ public class Settings {
                 System.out.println("Enter valid Option!");
                 break;
         }
-        totalField = (rows*columns) - flagCount;
+        totalField = (rows * columns) - flagCount;
         Game.setRowCOl(rows, columns);
     }
 
@@ -89,7 +89,7 @@ public class Settings {
         System.out.println("\n--------  Settings Preview --------");
         System.out.println("\nMode : " + mode);
         System.out.println("");
-    
+
     }
 
 }

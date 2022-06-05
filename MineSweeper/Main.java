@@ -1,11 +1,12 @@
 package MineSweeper;
+
 import java.util.Scanner;
 
 public class Main {
     static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
-        
+
         while (true) {
             Utils.clearScreen();
             System.out.println("\n----- Welcome to MineSweeper Game ----\n");
