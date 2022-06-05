@@ -1,5 +1,4 @@
 package MineSweeper;
-
 import java.util.Scanner;
 
 public class Main {
@@ -8,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         
         while (true) {
-            Game.clearScreen();
+            Utils.clearScreen();
             System.out.println("\n----- Welcome to MineSweeper Game ----\n");
             System.out.println("1. Play Game ");
             System.out.println("2. Settings ");
@@ -20,7 +19,7 @@ public class Main {
             switch (option) {
                 case 1:
                     Game.isStarted = true;
-                    Game.showSettings();
+                    Settings.showPreviewSettings();
                     Game.confirmStart();
                     break;
                 case 2:

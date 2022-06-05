@@ -17,7 +17,7 @@ public class Game {
         Character ch = Main.scan.next().charAt(0);
 
         if (ch == 'y' || ch == 'Y') {
-            clearScreen();
+            Utils.clearScreen();
             Init.initialize();
             setRowCOl(n, m);
 
@@ -26,14 +26,6 @@ public class Game {
 
             Game.startGame(start_index);
         }
-    }
-
-    public static void showSettings() {
-        clearScreen();
-        System.out.println("\n--------  Settings Preview --------");
-        System.out.println("\nMode : " + Settings.mode);
-        System.out.println("");
-
     }
 
     private static void startGame(int[] start_index) {
@@ -80,12 +72,12 @@ public class Game {
                 default:
                     System.out.println("Invalid Operation!");
             }
-            clearScreen();
+            Utils.clearScreen();
             if (Settings.flagCount == 0) {
                 openedField = getopenedField(check_matrix);
                 if (openedField == Settings.totalField) {
                     displayMineField(n, displayField);
-                    printMessage();
+                    Utils.printMessage();
                 }
 
             }
@@ -108,17 +100,6 @@ public class Game {
             }
         }
         return count;
-    }
-
-    private static void printMessage() {
-        System.out.println("\n-------------- CONGRATULATIONS !! --------------\n");
-        System.out.println("               YOU WON THE GAME                \n\n");
-        Main.playAgain();
-    }
-
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
     }
 
     private static void openMine(int[][] mineField,
@@ -281,7 +262,7 @@ public class Game {
     }
 
     private static void displayBombs(int[][] mineField) {
-        clearScreen();
+        Utils.clearScreen();
         System.out.println("                  Oops!        \n");
         System.out.println("--------------- GAME OVER ------------\n\n");
        // System.out.println("  | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |");

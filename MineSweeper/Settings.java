@@ -84,4 +84,12 @@ public class Settings {
         Game.setRowCOl(rows, columns);
     }
 
+    public static void showPreviewSettings() {
+        Utils.clearScreen();
+        System.out.println("\n--------  Settings Preview --------");
+        System.out.println("\nMode : " + mode);
+        System.out.println("");
+    
+    }
+
 }
