@@ -26,13 +26,16 @@ public class Init {
 
                 for(int i = -1 ;i < 2;i++){
                     for(int j = -1;j<2;j++){
+
                         try {
                             if(Game.mineField[row+i][column+j] >=0 ){
                                 Game.mineField[row+i][column+j] += 1;
                             }
                         } catch (Exception e) {}
+                        
                     }
                 }
+
                 count++;
             }
         }
