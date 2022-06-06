@@ -173,7 +173,7 @@ public class Game {
             for(int colIndex = -1;colIndex<2;colIndex++){
 
                 try {
-                    openEmptySpaces(displaymatrix, matrix, grid, i+rowIndex, j+colIndex);
+                    openEmptySpaces( mineField, displaymatrix, row+rowIndex, col+colIndex);
                 } catch (Exception e) {}
 
             }
