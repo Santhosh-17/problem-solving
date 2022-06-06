@@ -7,16 +7,17 @@ public class Game {
     static boolean isStarted = true;
     static int n = Settings.rows;
     static int m = Settings.columns;
+    static long startTime;
 
-    static int[][] mineField ;
-    static char[][] displayField ;
+    static int[][] mineField;
+    static char[][] displayField;
     static boolean[][] check_matrix;
 
     public static void confirmStart() {
         System.out.print("\nPress 'y' to start the game : ");
-        Character ch = Main.scan.next().charAt(0);
+        Character ch = Character.toLowerCase(Main.scan.next().charAt(0));
 
-        if (ch == 'y' || ch == 'Y') {
+        if (ch == 'y') {
             Utils.clearScreen();
             Init.initialize();
             setRowCOl(n, m);
@@ -29,7 +30,7 @@ public class Game {
     }
 
     private static void startGame(int[] start_index) {
-        
+
         while (true) {
             Utils.displayMineField(n, displayField);
             System.out.println("\n" + msg);
@@ -40,14 +41,17 @@ public class Game {
             if (isStarted) {
                 System.out.println("\nEnter S to start:");
                 operation = Main.scan.next().charAt(0);
+
+                // Start Time
+                startTime = System.currentTimeMillis();
                 row = start_index[0];
                 col = start_index[1];
                 isStarted = false;
             } else {
                 System.out.println("\nEnter Operation : (Open - o / Flag - f / Unflag - u / Exit - x)");
-                operation = Main.scan.next().charAt(0);
-                if (operation == 'X' || operation == 'x') {
-                   return;
+                operation = Character.toLowerCase(Main.scan.next().charAt(0));
+                if (operation == 'x') {
+                    return;
                 }
                 System.out.println("Enter row, col :");
                 row = Main.scan.nextInt();
@@ -56,17 +60,13 @@ public class Game {
 
             switch (operation) {
                 case 'o':
-                case 'O':
-                case 'S':
                 case 's':
                     openMine(mineField, displayField, check_matrix, row, col);
                     break;
                 case 'f':
-                case 'F':
                     setFlag(displayField, row, col);
                     break;
                 case 'u':
-                case 'U':
                     unFlag(displayField, row, col);
                     break;
                 default:
@@ -74,7 +74,7 @@ public class Game {
             }
             Utils.clearScreen();
             if (Settings.flagCount == 0) {
-                openedField = getopenedField(check_matrix);
+                openedField = getopenedField(displayField);
                 if (openedField == Settings.totalField) {
                     Utils.displayMineField(n, displayField);
                     Utils.printMessage();
@@ -90,11 +90,11 @@ public class Game {
         m = col;
     }
 
-    private static int getopenedField(boolean[][] check_matrix) {
+    private static int getopenedField(char[][] matrix) {
         int count = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (check_matrix[i][j] == true) {
+                if (matrix[i][j] != '-' || matrix[i][j] != 'F') {
                     count++;
                 }
             }
@@ -104,7 +104,7 @@ public class Game {
 
     private static void openMine(int[][] mineField,
             char[][] displayField,
-            boolean[][] check_matrix, 
+            boolean[][] check_matrix,
             int row, int col) {
 
         if (displayField[row][col] == 'F') {
