@@ -173,17 +173,16 @@ public class Game {
             matrix[i][j] = true;
             displaymatrix[i][j] = ' ';
 
-           // displaymatrix[i][j] = Integer.toString(grid[i][j]).charAt(0);
+           for(int rowIndex = -1 ;rowIndex < 2;rowIndex++){
+            for(int colIndex = -1;colIndex<2;colIndex++){
 
-            openEmptySpaces(displaymatrix, matrix, grid, i, j + 1); // right
-            openEmptySpaces(displaymatrix, matrix, grid, i + 1, j); // down
-            openEmptySpaces(displaymatrix, matrix, grid, i, j - 1); // left
-            openEmptySpaces(displaymatrix, matrix, grid, i - 1, j); // up
+                try {
+                    openEmptySpaces(displaymatrix, matrix, grid, i+rowIndex, j+colIndex);
+                } catch (Exception e) {}
 
-            openEmptySpaces(displaymatrix, matrix, grid, i + 1, j + 1); // downright
-            openEmptySpaces(displaymatrix, matrix, grid, i - 1, j + 1); // upright
-            openEmptySpaces(displaymatrix, matrix, grid, i - 1, j - 1); // upleft
-            openEmptySpaces(displaymatrix, matrix, grid, i + 1, j - 1); // downleft
+            }
+        }
+
         }
     }
 
