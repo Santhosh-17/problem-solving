@@ -48,6 +48,7 @@ public class Main {
             case 'y':
             case 'Y':
                 Game.isStarted = true;
+                Settings.resetFlagCount();
                 Game.confirmStart();
                 break;
 
