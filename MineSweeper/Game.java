@@ -7,9 +7,10 @@ public class Game {
     static boolean isStarted = true;
     static int n = Settings.rows;
     static int m = Settings.columns;
+    static long startTime;
 
-    static int[][] mineField ;
-    static char[][] displayField ;
+    static int[][] mineField;
+    static char[][] displayField;
     static boolean[][] check_matrix;
 
     public static void confirmStart() {
@@ -29,7 +30,7 @@ public class Game {
     }
 
     private static void startGame(int[] start_index) {
-        
+
         while (true) {
             Utils.displayMineField(n, displayField);
             System.out.println("\n" + msg);
@@ -40,6 +41,9 @@ public class Game {
             if (isStarted) {
                 System.out.println("\nEnter S to start:");
                 operation = Main.scan.next().charAt(0);
+
+                // Start Time
+                startTime = System.currentTimeMillis();
                 row = start_index[0];
                 col = start_index[1];
                 isStarted = false;
@@ -47,7 +51,7 @@ public class Game {
                 System.out.println("\nEnter Operation : (Open - o / Flag - f / Unflag - u / Exit - x)");
                 operation = Main.scan.next().charAt(0);
                 if (operation == 'X' || operation == 'x') {
-                   return;
+                    return;
                 }
                 System.out.println("Enter row, col :");
                 row = Main.scan.nextInt();
@@ -104,7 +108,7 @@ public class Game {
 
     private static void openMine(int[][] mineField,
             char[][] displayField,
-            boolean[][] check_matrix, 
+            boolean[][] check_matrix,
             int row, int col) {
 
         if (displayField[row][col] == 'F') {
@@ -173,7 +177,7 @@ public class Game {
             matrix[i][j] = true;
             displaymatrix[i][j] = ' ';
 
-           // displaymatrix[i][j] = Integer.toString(grid[i][j]).charAt(0);
+            // displaymatrix[i][j] = Integer.toString(grid[i][j]).charAt(0);
 
             openEmptySpaces(displaymatrix, matrix, grid, i, j + 1); // right
             openEmptySpaces(displaymatrix, matrix, grid, i + 1, j); // down
