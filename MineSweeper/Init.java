@@ -1,5 +1,6 @@
 package MineSweeper;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class Init {
@@ -23,29 +24,14 @@ public class Init {
 
                 Game.mineField[row][column] = -2;
 
-                if (row > 0 && column > 0 && Game.mineField[row - 1][column - 1] >= 0) {
-                    Game.mineField[row - 1][column - 1] += 1;
-                }
-                if (row > 0 && Game.mineField[row - 1][column] >= 0) {
-                    Game.mineField[row - 1][column] += 1;
-                }
-                if (row > 0 && column < m - 1 && Game.mineField[row - 1][column + 1] >= 0) {
-                    Game.mineField[row - 1][column + 1] += 1;
-                }
-                if (column < m - 1 && Game.mineField[row][column + 1] >= 0) {
-                    Game.mineField[row][column + 1] += 1;
-                }
-                if (column > 0 && Game.mineField[row][column - 1] >= 0) {
-                    Game.mineField[row][column - 1] += 1;
-                }
-                if (row < n - 1 && Game.mineField[row + 1][column] >= 0) {
-                    Game.mineField[row + 1][column] += 1;
-                }
-                if (row < n - 1 && column > 0 && Game.mineField[row + 1][column - 1] >= 0) {
-                    Game.mineField[row + 1][column - 1] += 1;
-                }
-                if (row < n - 1 && column < m - 1 && Game.mineField[row + 1][column + 1] >= 0) {
-                    Game.mineField[row + 1][column + 1] += 1;
+                for(int i = -1 ;i < 2;i++){
+                    for(int j = -1;j<2;j++){
+                        try {
+                            if(Game.mineField[row+i][column+j] >=0 ){
+                                Game.mineField[row+i][column+j] += 1;
+                            }
+                        } catch (Exception e) {}
+                    }
                 }
                 count++;
             }
@@ -56,6 +42,8 @@ public class Init {
                 Game.displayField[row][column] = '-';
             }
         }
+
+        System.out.println(Arrays.deepToString(Game.mineField));
     }
 
 }
