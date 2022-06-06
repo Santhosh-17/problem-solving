@@ -32,7 +32,7 @@ public class Init {
                                 Game.mineField[row+i][column+j] += 1;
                             }
                         } catch (Exception e) {}
-                        
+
                     }
                 }
 
@@ -46,7 +46,6 @@ public class Init {
             }
         }
 
-        System.out.println(Arrays.deepToString(Game.mineField));
     }
 
 }
