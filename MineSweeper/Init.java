@@ -3,6 +3,7 @@ import java.util.Random;
 
 public class Init {
 
+    //initialize array
     public static void initialize() {
         Random random = new Random();
         int count = 0;
