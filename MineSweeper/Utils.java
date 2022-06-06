@@ -1,10 +1,13 @@
 package MineSweeper;
 
 public class Utils {
+    static int winScore = 0;
 
     public static void printMessage() {
+        winScore += 100;
         System.out.println("\n-------------- CONGRATULATIONS !! --------------\n");
         System.out.println("               YOU WON THE GAME                \n");
+        System.out.println("                Score = " + winScore);
         Utils.timeTaken();
         Main.playAgain();
     }
@@ -46,6 +49,7 @@ public class Utils {
         clearScreen();
         System.out.println("                  Oops!        \n");
         System.out.println("--------------- GAME OVER ------------\n");
+        System.out.println("                 Score = " + winScore);
         Utils.timeTaken();
         // System.out.println(" | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |");
         System.out.print("    |");

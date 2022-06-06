@@ -15,9 +15,9 @@ public class Game {
 
     public static void confirmStart() {
         System.out.print("\nPress 'y' to start the game : ");
-        Character ch = Main.scan.next().charAt(0);
+        Character ch = Character.toLowerCase(Main.scan.next().charAt(0));
 
-        if (ch == 'y' || ch == 'Y') {
+        if (ch == 'y') {
             Utils.clearScreen();
             Init.initialize();
             setRowCOl(n, m);
@@ -49,8 +49,8 @@ public class Game {
                 isStarted = false;
             } else {
                 System.out.println("\nEnter Operation : (Open - o / Flag - f / Unflag - u / Exit - x)");
-                operation = Main.scan.next().charAt(0);
-                if (operation == 'X' || operation == 'x') {
+                operation = Character.toLowerCase(Main.scan.next().charAt(0));
+                if (operation == 'x') {
                     return;
                 }
                 System.out.println("Enter row, col :");
@@ -60,17 +60,13 @@ public class Game {
 
             switch (operation) {
                 case 'o':
-                case 'O':
-                case 'S':
                 case 's':
                     openMine(mineField, displayField, check_matrix, row, col);
                     break;
                 case 'f':
-                case 'F':
                     setFlag(displayField, row, col);
                     break;
                 case 'u':
-                case 'U':
                     unFlag(displayField, row, col);
                     break;
                 default:
@@ -78,7 +74,7 @@ public class Game {
             }
             Utils.clearScreen();
             if (Settings.flagCount == 0) {
-                openedField = getopenedField(check_matrix);
+                openedField = getopenedField(displayField);
                 if (openedField == Settings.totalField) {
                     Utils.displayMineField(n, displayField);
                     Utils.printMessage();
@@ -94,11 +90,11 @@ public class Game {
         m = col;
     }
 
-    private static int getopenedField(boolean[][] check_matrix) {
+    private static int getopenedField(char[][] matrix) {
         int count = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (check_matrix[i][j] == true) {
+                if (matrix[i][j] != '-' || matrix[i][j] != 'F') {
                     count++;
                 }
             }
