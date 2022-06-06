@@ -43,17 +43,15 @@ public class Main {
 
     public static void playAgain() {
         System.out.print("\nDo You want to play again? (Y-yes) or (N - no) : ");
-        char wannaPlay = scan.next().charAt(0);
+        char wannaPlay = Character.toLowerCase(scan.next().charAt(0));
         switch (wannaPlay) {
             case 'y':
-            case 'Y':
                 Game.isStarted = true;
                 Settings.resetFlagCount();
                 Game.confirmStart();
                 break;
 
             case 'n':
-            case 'N':
                 System.out.println("\nThank you ! visit again\n");
                 scan.close();
                 System.exit(0);

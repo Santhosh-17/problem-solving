@@ -11,7 +11,6 @@ public class Game {
 
     static int[][] mineField;
     static char[][] displayField;
-    static boolean[][] check_matrix;
 
     public static void confirmStart() {
         System.out.print("\nPress 'y' to start the game : ");
@@ -61,7 +60,7 @@ public class Game {
             switch (operation) {
                 case 'o':
                 case 's':
-                    openMine(mineField, displayField, check_matrix, row, col);
+                    openMine(mineField, displayField, row, col);
                     break;
                 case 'f':
                     setFlag(displayField, row, col);
@@ -92,9 +91,9 @@ public class Game {
 
     private static int getopenedField(char[][] matrix) {
         int count = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (matrix[i][j] != '-' || matrix[i][j] != 'F') {
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < m; col++) {
+                if (matrix[row][col] != '-' || matrix[row][col] != 'F') {
                     count++;
                 }
             }
@@ -104,7 +103,6 @@ public class Game {
 
     private static void openMine(int[][] mineField,
             char[][] displayField,
-            boolean[][] check_matrix,
             int row, int col) {
 
         if (displayField[row][col] == 'F') {
@@ -113,7 +111,7 @@ public class Game {
         }
 
         if (mineField[row][col] == 0) {
-            openEmptySpaces(displayField, check_matrix, mineField, row, col);
+            openEmptySpaces(mineField, displayField, row, col);
             return;
         }
 
@@ -121,14 +119,13 @@ public class Game {
             Utils.displayBombs(mineField);
         }
 
-        if (mineField[row][col] > 0 && check_matrix[row][col] == false) {
-            check_matrix[row][col] = true;
+        if (mineField[row][col] > 0 && displayField[row][col] == '-') {
             displayField[row][col] = Integer.toString(mineField[row][col]).charAt(0);
             openedField++;
             return;
         }
 
-        if (mineField[row][col] > 0 && check_matrix[row][col] == true) {
+        if (mineField[row][col] > 0 && displayField[row][col] != '-') {
             msg = "It's already Opened!";
         }
 
@@ -157,33 +154,31 @@ public class Game {
 
     }
 
-    public static void openEmptySpaces(char[][] displaymatrix, boolean[][] matrix, int[][] grid, int i,
-            int j) {
-        if (i == -1 || j == -1 || i >= Settings.rows || j >= Settings.columns) {
+    public static void openEmptySpaces(int[][] mineField, char[][] displaymatrix, int row,
+            int col) {
+        if (row == -1 || col == -1 || row >= Settings.rows || col >= Settings.columns) {
             return;
         }
 
-        if (grid[i][j] != 0) {
-            matrix[i][j] = true;
-            displaymatrix[i][j] = Integer.toString(grid[i][j]).charAt(0);
+        if (mineField[row][col] != 0) {
+            displaymatrix[row][col] = Integer.toString(mineField[row][col]).charAt(0);
 
         }
 
-        if (matrix[i][j] == false && grid[i][j] == 0) {
-            matrix[i][j] = true;
-            displaymatrix[i][j] = ' ';
+        if ((displaymatrix[row][col] == '-' || displaymatrix[row][col] == 'X') && mineField[row][col] == 0) {
+            displaymatrix[row][col] = ' ';
 
-            // displaymatrix[i][j] = Integer.toString(grid[i][j]).charAt(0);
+            // displaymatrix[row][col] = Integer.toString(mineField[row][col]).charAt(0);
 
-            openEmptySpaces(displaymatrix, matrix, grid, i, j + 1); // right
-            openEmptySpaces(displaymatrix, matrix, grid, i + 1, j); // down
-            openEmptySpaces(displaymatrix, matrix, grid, i, j - 1); // left
-            openEmptySpaces(displaymatrix, matrix, grid, i - 1, j); // up
+            openEmptySpaces(mineField, displaymatrix, row, col + 1); // right
+            openEmptySpaces(mineField, displaymatrix, row + 1, col); // down
+            openEmptySpaces(mineField, displaymatrix, row, col - 1); // left
+            openEmptySpaces(mineField, displaymatrix, row - 1, col); // up
 
-            openEmptySpaces(displaymatrix, matrix, grid, i + 1, j + 1); // downright
-            openEmptySpaces(displaymatrix, matrix, grid, i - 1, j + 1); // upright
-            openEmptySpaces(displaymatrix, matrix, grid, i - 1, j - 1); // upleft
-            openEmptySpaces(displaymatrix, matrix, grid, i + 1, j - 1); // downleft
+            openEmptySpaces(mineField, displaymatrix, row + 1, col + 1); // downright
+            openEmptySpaces(mineField, displaymatrix, row - 1, col + 1); // upright
+            openEmptySpaces(mineField, displaymatrix, row - 1, col - 1); // upleft
+            openEmptySpaces(mineField, displaymatrix, row + 1, col - 1); // downleft
         }
     }
 

@@ -1,6 +1,5 @@
 package MineSweeper;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class Init {
@@ -10,10 +9,9 @@ public class Init {
         int count = 0;
         int n = Settings.rows;
         int m = Settings.columns;
-        
+
         Game.mineField = new int[n][m];
         Game.displayField = new char[n][m];
-        Game.check_matrix = new boolean[n][m];
         int flags = Settings.getFlagCount();
 
         while (count < flags) {
@@ -24,14 +22,15 @@ public class Init {
 
                 Game.mineField[row][column] = -2;
 
-                for(int i = -1 ;i < 2;i++){
-                    for(int j = -1;j<2;j++){
+                for (int i = -1; i < 2; i++) {
+                    for (int j = -1; j < 2; j++) {
 
                         try {
-                            if(Game.mineField[row+i][column+j] >=0 ){
-                                Game.mineField[row+i][column+j] += 1;
+                            if (Game.mineField[row + i][column + j] >= 0) {
+                                Game.mineField[row + i][column + j] += 1;
                             }
-                        } catch (Exception e) {}
+                        } catch (Exception e) {
+                        }
 
                     }
                 }
