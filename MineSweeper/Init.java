@@ -1,5 +1,4 @@
 package MineSweeper;
-
 import java.util.Random;
 
 public class Init {

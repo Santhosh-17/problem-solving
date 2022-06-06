@@ -168,17 +168,16 @@ public class Game {
         if ((displaymatrix[row][col] == '-' || displaymatrix[row][col] == 'X') && mineField[row][col] == 0) {
             displaymatrix[row][col] = ' ';
 
-            // displaymatrix[row][col] = Integer.toString(mineField[row][col]).charAt(0);
 
-            openEmptySpaces(mineField, displaymatrix, row, col + 1); // right
-            openEmptySpaces(mineField, displaymatrix, row + 1, col); // down
-            openEmptySpaces(mineField, displaymatrix, row, col - 1); // left
-            openEmptySpaces(mineField, displaymatrix, row - 1, col); // up
+           for(int rowIndex = -1 ;rowIndex < 2;rowIndex++){
+            for(int colIndex = -1;colIndex<2;colIndex++){
 
-            openEmptySpaces(mineField, displaymatrix, row + 1, col + 1); // downright
-            openEmptySpaces(mineField, displaymatrix, row - 1, col + 1); // upright
-            openEmptySpaces(mineField, displaymatrix, row - 1, col - 1); // upleft
-            openEmptySpaces(mineField, displaymatrix, row + 1, col - 1); // downleft
+                try {
+                    openEmptySpaces(displaymatrix, matrix, grid, i+rowIndex, j+colIndex);
+                } catch (Exception e) {}
+
+            }
+        }
         }
     }
 
