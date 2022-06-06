@@ -92,4 +92,16 @@ public class Settings {
     
     }
 
+    public static void resetFlagCount(){
+
+        if(mode.equals("Easy")){
+            flagCount = 10;
+        }else if(mode.equals("Medium")){
+            flagCount = 40;
+        }else{
+            flagCount = 99;
+        }
+        
+    }
+
 }

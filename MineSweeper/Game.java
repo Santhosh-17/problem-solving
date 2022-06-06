@@ -7,16 +7,16 @@ public class Game {
     static boolean isStarted = true;
     static int n = Settings.rows;
     static int m = Settings.columns;
+    static long startTime;
 
-    static int[][] mineField ;
-    static char[][] displayField ;
-    static boolean[][] check_matrix;
+    static int[][] mineField;
+    static char[][] displayField;
 
     public static void confirmStart() {
         System.out.print("\nPress 'y' to start the game : ");
-        Character ch = Main.scan.next().charAt(0);
+        Character ch = Character.toLowerCase(Main.scan.next().charAt(0));
 
-        if (ch == 'y' || ch == 'Y') {
+        if (ch == 'y') {
             Utils.clearScreen();
             Init.initialize();
             setRowCOl(n, m);
@@ -29,9 +29,9 @@ public class Game {
     }
 
     private static void startGame(int[] start_index) {
-        
+
         while (true) {
-            displayMineField(n, displayField);
+            Utils.displayMineField(n, displayField);
             System.out.println("\n" + msg);
             msg = "";
             System.out.println("No. of flags remaining: " + Settings.flagCount);
@@ -40,14 +40,17 @@ public class Game {
             if (isStarted) {
                 System.out.println("\nEnter S to start:");
                 operation = Main.scan.next().charAt(0);
+
+                // Start Time
+                startTime = System.currentTimeMillis();
                 row = start_index[0];
                 col = start_index[1];
                 isStarted = false;
             } else {
                 System.out.println("\nEnter Operation : (Open - o / Flag - f / Unflag - u / Exit - x)");
-                operation = Main.scan.next().charAt(0);
-                if (operation == 'X' || operation == 'x') {
-                   return;
+                operation = Character.toLowerCase(Main.scan.next().charAt(0));
+                if (operation == 'x') {
+                    return;
                 }
                 System.out.println("Enter row, col :");
                 row = Main.scan.nextInt();
@@ -56,17 +59,13 @@ public class Game {
 
             switch (operation) {
                 case 'o':
-                case 'O':
-                case 'S':
                 case 's':
-                    openMine(mineField, displayField, check_matrix, row, col);
+                    openMine(mineField, displayField, row, col);
                     break;
                 case 'f':
-                case 'F':
                     setFlag(displayField, row, col);
                     break;
                 case 'u':
-                case 'U':
                     unFlag(displayField, row, col);
                     break;
                 default:
@@ -74,9 +73,9 @@ public class Game {
             }
             Utils.clearScreen();
             if (Settings.flagCount == 0) {
-                openedField = getopenedField(check_matrix);
+                openedField = getopenedField(displayField);
                 if (openedField == Settings.totalField) {
-                    displayMineField(n, displayField);
+                    Utils.displayMineField(n, displayField);
                     Utils.printMessage();
                 }
 
@@ -90,11 +89,11 @@ public class Game {
         m = col;
     }
 
-    private static int getopenedField(boolean[][] check_matrix) {
+    private static int getopenedField(char[][] matrix) {
         int count = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (check_matrix[i][j] == true) {
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < m; col++) {
+                if (matrix[row][col] != '-' || matrix[row][col] != 'F') {
                     count++;
                 }
             }
@@ -104,7 +103,6 @@ public class Game {
 
     private static void openMine(int[][] mineField,
             char[][] displayField,
-            boolean[][] check_matrix, 
             int row, int col) {
 
         if (displayField[row][col] == 'F') {
@@ -113,22 +111,21 @@ public class Game {
         }
 
         if (mineField[row][col] == 0) {
-            openEmptySpaces(displayField, check_matrix, mineField, row, col);
+            openEmptySpaces(mineField, displayField, row, col);
             return;
         }
 
         if (mineField[row][col] == -2) {
-            displayBombs(mineField);
+            Utils.displayBombs(mineField);
         }
 
-        if (mineField[row][col] > 0 && check_matrix[row][col] == false) {
-            check_matrix[row][col] = true;
+        if (mineField[row][col] > 0 && displayField[row][col] == '-') {
             displayField[row][col] = Integer.toString(mineField[row][col]).charAt(0);
             openedField++;
             return;
         }
 
-        if (mineField[row][col] > 0 && check_matrix[row][col] == true) {
+        if (mineField[row][col] > 0 && displayField[row][col] != '-') {
             msg = "It's already Opened!";
         }
 
@@ -157,33 +154,30 @@ public class Game {
 
     }
 
-    public static void openEmptySpaces(char[][] displaymatrix, boolean[][] matrix, int[][] grid, int i,
-            int j) {
-        if (i == -1 || j == -1 || i >= Settings.rows || j >= Settings.columns) {
+    public static void openEmptySpaces(int[][] mineField, char[][] displaymatrix, int row,
+            int col) {
+        if (row == -1 || col == -1 || row >= Settings.rows || col >= Settings.columns) {
             return;
         }
 
-        if (grid[i][j] != 0) {
-            matrix[i][j] = true;
-            displaymatrix[i][j] = Integer.toString(grid[i][j]).charAt(0);
+        if (mineField[row][col] != 0) {
+            displaymatrix[row][col] = Integer.toString(mineField[row][col]).charAt(0);
 
         }
 
-        if (matrix[i][j] == false && grid[i][j] == 0) {
-            matrix[i][j] = true;
-            displaymatrix[i][j] = ' ';
+        if ((displaymatrix[row][col] == '-' || displaymatrix[row][col] == 'X') && mineField[row][col] == 0) {
+            displaymatrix[row][col] = ' ';
 
-           // displaymatrix[i][j] = Integer.toString(grid[i][j]).charAt(0);
 
-            openEmptySpaces(displaymatrix, matrix, grid, i, j + 1); // right
-            openEmptySpaces(displaymatrix, matrix, grid, i + 1, j); // down
-            openEmptySpaces(displaymatrix, matrix, grid, i, j - 1); // left
-            openEmptySpaces(displaymatrix, matrix, grid, i - 1, j); // up
+           for(int rowIndex = -1 ;rowIndex < 2;rowIndex++){
+            for(int colIndex = -1;colIndex<2;colIndex++){
 
-            openEmptySpaces(displaymatrix, matrix, grid, i + 1, j + 1); // downright
-            openEmptySpaces(displaymatrix, matrix, grid, i - 1, j + 1); // upright
-            openEmptySpaces(displaymatrix, matrix, grid, i - 1, j - 1); // upleft
-            openEmptySpaces(displaymatrix, matrix, grid, i + 1, j - 1); // downleft
+                try {
+                    openEmptySpaces( mineField, displaymatrix, row+rowIndex, col+colIndex);
+                } catch (Exception e) {}
+
+            }
+        }
         }
     }
 
@@ -231,70 +225,6 @@ public class Game {
             }
         }
         return index;
-    }
-
-    private static void displayMineField(int n, char[][] displayField) {
-        System.out.println("\n  --------------------------------- Minesweeper -------------------------------------\n");
-                             //      |  0 |  1 |  2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 | 10 | 11 | 12 | 13 | 14 | 15 |
-        //System.out.println("  | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |");
-        System.out.print("    |");
-        for(int i = 0;i<m ;i++){
-            if(i<10){
-                System.out.print("  "+i+" |");
-            }else{
-                System.out.print(" "+i+" |");
-            }
-        }
-        System.out.println("");
-        for (int row = 0; row < n; row++) {
-            if(row<10){
-                System.out.print("  "+row+" | ");
-            }else{
-                System.out.print(" "+row+" | ");
-            }
-          //  System.out.print(" "+row + " | ");
-            for (int col = 0; col < m; col++) {
-                
-               System.out.print(" "+displayField[row][col] + " | ");
-            }
-            System.out.println();
-        }
-    }
-
-    private static void displayBombs(int[][] mineField) {
-        Utils.clearScreen();
-        System.out.println("                  Oops!        \n");
-        System.out.println("--------------- GAME OVER ------------\n\n");
-       // System.out.println("  | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |");
-       System.out.print("    |");
-       for(int i = 0;i<m ;i++){
-           if(i<10){
-               System.out.print("  "+i+" |");
-           }else{
-               System.out.print(" "+i+" |");
-           }
-       }
-       System.out.println("");
-        for (int row = 0; row < n; row++) {
-            if(row<10){
-                System.out.print("  "+row+" | ");
-            }else{
-                System.out.print(" "+row+" | ");
-            }
-            for (int col = 0; col < m; col++) {
-                // System.out.print(mineField[row][col] );
-                if (mineField[row][col] == -2) {
-                    System.out.print(" B " + "| ");
-                } else {
-                    System.out.print(" "+displayField[row][col] + " " + "| ");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println("\n         You lost the Game :(        \n");
-        System.out.println("         Better luck next time!         \n\n");
-        Main.playAgain();
-
     }
 
 }
